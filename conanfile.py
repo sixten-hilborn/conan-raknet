@@ -48,10 +48,10 @@ class RaknetConan(ConanFile):
         self.run_and_print("cmake --build . %s %s" % (cmake.build_config, build_options))
         
     def package(self):
-        self.copy("*.h", dst="include/RakNet", src="{0}/source".format(self.folder))
+        self.copy("*.h", dst="include/RakNet", src="{0}/Source".format(self.folder))
         self.copy("*.lib", dst="lib", src="lib", keep_path=False)
         self.copy("*.a", dst="lib", src="lib", keep_path=False)
-        self.copy("*.so", dst="lib", src="lib", keep_path=False)
+        self.copy("*.so", dst="lib", src=".", keep_path=False)
         self.copy("*.dll", dst="bin", src="bin", keep_path=False)
         self.copy("*.dylib", dst="bin", src="bin", keep_path=False)
 

@@ -1,0 +1,17 @@
+--- DR_SHA1.h	Tue Jan  3 01:59:23 2017
++++ DR_SHA1.h	Sat Aug 20 16:24:00 2016
+@@ -168,8 +168,12 @@
+ #ifdef _MSC_VER
+ #include <tchar.h>
+ #else
+-#ifndef TCHAR
+-#define TCHAR char
++#ifndef _TCHAR_DEFINED
++#define _TCHAR_DEFINED
++  typedef char TCHAR;
++  typedef TCHAR *PTCHAR;
++  typedef unsigned char TBYTE;
++  typedef TBYTE *PTBYTE;
+ #endif
+ #ifndef _T
+ #define _T(__x) (__x)
