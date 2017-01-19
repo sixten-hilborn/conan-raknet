@@ -53,7 +53,7 @@ class RaknetConan(ConanFile):
         self.copy("*.a", dst="lib", src="lib", keep_path=False)
         self.copy("*.so", dst="lib", src=".", keep_path=False)
         self.copy("*.dll", dst="bin", src="bin", keep_path=False)
-        self.copy("*.dylib", dst="bin", src="bin", keep_path=False)
+        self.copy("*.dylib", dst="bin", src=".", keep_path=False)
 
     def package_info(self):
         if self.options.shared:
