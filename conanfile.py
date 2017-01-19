@@ -53,7 +53,7 @@ class RaknetConan(ConanFile):
         self.copy("*.a", dst="lib", src="lib", keep_path=False)
         self.copy("*.so", dst="lib", src=".", keep_path=False)
         self.copy("*.dll", dst="bin", src="bin", keep_path=False)
-        self.copy("*.dylib", dst="bin", src=".", keep_path=False)
+        self.copy("*.dylib", dst="lib", src=".", keep_path=False)
 
     def package_info(self):
         if self.options.shared:
@@ -63,7 +63,7 @@ class RaknetConan(ConanFile):
             if self.settings.os == 'Windows':
                 self.cpp_info.libs.append('ws2_32')
             elif self.settings.os == 'Linux':
-				self.cpp_info.libs.append('pthread')
+                self.cpp_info.libs.append('pthread')
 
     def run_and_print(self, command):
         self.output.warn(command)
