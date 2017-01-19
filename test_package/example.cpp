@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "RakPeerInterface.h"
+#include "RakNet/RakPeerInterface.h"
 
 #define MAX_CLIENTS 10
 #define SERVER_PORT 60000
