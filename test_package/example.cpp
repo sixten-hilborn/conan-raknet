@@ -6,22 +6,23 @@
 
 int main(void)
 {
-	char str[512];
+	printf("Creating the RakPeerInterface...\n");
 	RakNet::RakPeerInterface *peer = RakNet::RakPeerInterface::GetInstance();
-	bool isServer;
 
 	printf("(C) or (S)erver?\n");
+	//char str[512];
 	//gets(str);
-	if ((str[0] == 'c') || (str[0] == 'C'))
+	//const bool isClient = (str[0] == 'c') || (str[0] == 'C');
+	const bool isClient = false;
+	if (isClient)
 	{
 		RakNet::SocketDescriptor sd;
 		peer->Startup(1, &sd, 1);
-		isServer = false;
 	}
-	else {
+	else
+	{
 		RakNet::SocketDescriptor sd(SERVER_PORT, 0);
 		peer->Startup(MAX_CLIENTS, &sd, 1);
-		isServer = true;
 	}
 
 
