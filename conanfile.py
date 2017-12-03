@@ -1,5 +1,4 @@
-from conans import ConanFile, CMake
-from conans.tools import get, patch
+from conans import ConanFile, CMake, tools
 import os
 import fnmatch
 
@@ -9,7 +8,7 @@ def apply_patches(source, dest):
         for filename in fnmatch.filter(filenames, '*.patch'):
             patch_file = os.path.join(root, filename)
             dest_path = os.path.join(dest, os.path.relpath(root, source))
-            patch(base_path=dest_path, patch_file=patch_file)
+            tools.patch(base_path=dest_path, patch_file=patch_file)
 
 
 class RaknetConan(ConanFile):
@@ -28,24 +27,15 @@ class RaknetConan(ConanFile):
     license = "BSD - https://opensource.org/licenses/BSD-3-Clause"
 
     def source(self):
-        get("https://github.com/OculusVR/RakNet/archive/master.zip")
+        tools.get("https://github.com/OculusVR/RakNet/archive/master.zip")
         apply_patches('patches', self.folder)
 
     def build(self):
-        cmake = CMake(self.settings)
-        enable_dll = 1
-        enable_static = 1
-        if self.options.shared:
-            enable_static = 0
-        else:
-            enable_dll = 0
-        options = [
-            '-DRAKNET_ENABLE_DLL={0}'.format(enable_dll),
-            '-DRAKNET_ENABLE_STATIC={0}'.format(enable_static)
-        ]
-        build_options = ''
-        self.run_and_print('cmake . %s %s' % (cmake.command_line, ' '.join(options)))
-        self.run_and_print("cmake --build . %s %s" % (cmake.build_config, build_options))
+        cmake = CMake(self)
+        cmake.definitions['RAKNET_ENABLE_DLL'] = self.options.shared
+        cmake.definitions['RAKNET_ENABLE_STATIC'] = not self.options.shared
+        cmake.configure()
+        cmake.build()
         
     def package(self):
         self.copy("*.h", dst="include/RakNet", src="{0}/Source".format(self.folder))
@@ -64,7 +54,3 @@ class RaknetConan(ConanFile):
                 self.cpp_info.libs.append('ws2_32')
             elif self.settings.os == 'Linux':
                 self.cpp_info.libs.append('pthread')
-
-    def run_and_print(self, command):
-        self.output.warn(command)
-        self.run(command)
